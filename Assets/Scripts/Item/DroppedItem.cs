@@ -1,41 +1,27 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 
 public class DroppedItem : MonoBehaviour
 {
     public ItemData itemData;
 
-    private TextMeshProUGUI pickupTextUI;
+    // 🔥 Inspector에서 직접 연결
+    [SerializeField] private TextMeshProUGUI pickupTextUI;
+
     private bool canPickup = false;
     private PlayerStatus playerStatus;
 
     private void Awake()
     {
-        pickupTextUI = FindInactiveTMP("PickupText");
-
-        if (pickupTextUI != null)
+        // UI가 연결 안 되어 있으면 경고
+        if (pickupTextUI == null)
         {
-            pickupTextUI.gameObject.SetActive(false);
-        }
-        else
-        {
-            Debug.LogWarning("PickupText UI�� ã�� ���߽��ϴ�.");
-        }
-    }
-
-    private TextMeshProUGUI FindInactiveTMP(string objectName)
-    {
-        TextMeshProUGUI[] texts = Resources.FindObjectsOfTypeAll<TextMeshProUGUI>();
-
-        foreach (TextMeshProUGUI text in texts)
-        {
-            if (text.gameObject.name == objectName && text.gameObject.scene.IsValid())
-            {
-                return text;
-            }
+            Debug.LogWarning("PickupText UI가 Inspector에 연결되지 않았습니다.");
+            return;
         }
 
-        return null;
+        // 처음에는 꺼두기
+        pickupTextUI.gameObject.SetActive(false);
     }
 
     private void Update()
